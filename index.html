@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#7000FF" />
-  <meta name="description" content="Mano Mágica - PWA de comunicación asistida por dedos" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0e0b25" />
+  <meta name="description" content="Mano Mágica - Comunicador AAC Táctil" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>🤚 Mano Mágica</title>
@@ -13,88 +13,62 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    /* ===== RESET & ESTILOS BASE ===== */
+    /* ===== SISTEMA DE DISEÑO PREMIUM (MODERNO, VIBRANTE Y ACCESIBLE) ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --thumb-color:   #FF007F;
-      --thumb-dark:    #C9005F;
-      --index-color:   #FFD166;
-      --index-dark:    #FFB703;
-      --middle-color:  #4CC9F0;
-      --middle-dark:   #00B4D8;
-      --ring-color:    #06D6A0;
-      --ring-dark:     #059669;
-      --pinky-color:   #FF7D00;
-      --pinky-dark:    #E05300;
-      --palm-color:    #A78BFA;
-      --palm-dark:     #7C3AED;
+      /* Paleta de Colores de Alto Contraste y Amigables */
+      --color-index:   #FFD166; /* Amarillo pastel brillante */
+      --color-middle:  #4CC9F0; /* Celeste cian */
+      --color-ring:    #06D6A0; /* Verde esmeralda */
+      --color-pinky:   #FF7D00; /* Naranja encendido */
+      --color-thumb:   #FF007F; /* Rosa neón */
+      --color-palm:    #A78BFA; /* Violeta/lavanda */
 
-      --bg-gradient: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f0c29 50%, #050510 100%);
-      --glass-panel: rgba(255, 255, 255, 0.04);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --text: #F3F4F6;
+      --bg-dark: #090714;
+      --bg-gradient: radial-gradient(circle at 50% 50%, #171330 0%, #090714 80%);
+      --glass: rgba(255, 255, 255, 0.04);
+      --glass-active: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.07);
+      --text: #F9FAFB;
       --text-muted: #9CA3AF;
-      --radius-lg: 28px;
-      --radius-md: 20px;
-      --radius-full: 9999px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
     }
 
     html, body {
       height: 100%;
+      width: 100%;
       overflow: hidden;
       font-family: 'Outfit', sans-serif;
       background: var(--bg-gradient);
       color: var(--text);
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: 
-        radial-gradient(circle at 15% 25%, rgba(76, 201, 240, 0.12) 0%, transparent 35%),
-        radial-gradient(circle at 85% 75%, rgba(255, 0, 127, 0.12) 0%, transparent 35%),
-        radial-gradient(circle at 50% 10%, rgba(112, 0, 255, 0.15) 0%, transparent 50%);
-      z-index: -1;
-      pointer-events: none;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      position: fixed;
     }
 
     #app {
-      display: grid;
-      grid-template-rows: auto 1fr;
-      height: 100dvh;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 16px;
-      gap: 12px;
-    }
-
-    header {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 4px;
+      flex-direction: column;
+      height: 100dvh;
+      width: 100vw;
+      padding: 12px;
+      gap: 12px;
+      box-sizing: border-box;
     }
 
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, #FFD166, #FF007F, #4CC9F0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.8px;
-    }
-
+    /* BARRA SUPERIOR: ORACIÓN */
     #sentence-bar {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--glass-border);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      border-radius: var(--radius-lg);
-      padding: 12px 20px;
-      min-height: 72px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      min-height: 80px;
+      max-height: 100px;
+      overflow-y: auto;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -104,12 +78,16 @@
 
     .sentence-placeholder {
       color: var(--text-muted);
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 700;
       text-align: center;
       width: 100%;
       letter-spacing: 0.5px;
       opacity: 0.8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .sentence-chip {
@@ -121,163 +99,151 @@
       font-size: 1.1rem;
       font-weight: 900;
       color: #fff;
-      animation: popIn 0.3s forwards;
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
       box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255,255,255,0.2);
     }
 
     .sentence-chip .chip-emoji {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
     }
 
     @keyframes popIn {
-      from { transform: scale(0.7) translateY(12px); opacity: 0; }
+      from { transform: scale(0.8) translateY(8px); opacity: 0; }
       to   { transform: scale(1) translateY(0); opacity: 1; }
     }
 
+    /* ===== AREA PRINCIPAL: MAQUETACIÓN PARA TABLETS (EN L) ===== */
     .main-area {
       display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
-      gap: 16px;
-      overflow: hidden;
+      grid-template-columns: 1fr 1fr; /* Mitad y mitad en tablet horizontal para el balance perfecto */
+      gap: 14px;
+      flex: 1;
       min-height: 0;
     }
 
+    /* LADO IZQUIERDO: COMUNICADOR VISUAL DE LA MANO */
     #hand-panel {
-      display: grid;
-      grid-template-rows: 1fr auto;
-      background: var(--glass-panel);
+      display: flex;
+      flex-direction: column;
+      background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
       padding: 16px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 12px 45px rgba(0,0,0,0.35);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
       min-height: 0;
+      justify-content: space-between;
       gap: 12px;
     }
 
-    .hand-layout-container {
+    /* Contenedor central de la mano y los botones de acción rápida */
+    .hand-canvas-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      height: 100%;
+      flex: 1;
       min-height: 0;
-      width: 100%;
+      position: relative;
     }
 
     #hand-svg-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      flex: 1;
+      width: 100%;
       height: 100%;
-      min-height: 0;
+      max-height: 280px;
     }
 
     #hand-svg {
       width: 100%;
       height: 100%;
-      max-height: 320px;
-      filter: drop-shadow(0 15px 30px rgba(0,0,0,0.5));
+      max-height: 280px;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4));
     }
 
-    .hand-quick-actions {
+    /* Botones rápidos de hablar y borrar flotantes o posicionados a la izquierda/derecha de la mano */
+    .action-button-wing {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      justify-content: center;
+      gap: 14px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
-    .btn-quick-action {
-      width: 76px;
-      height: 76px;
+    .btn-action-circle {
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       border: 2px solid var(--glass-border);
-      color: #ffffff;
+      color: white;
       font-size: 2.2rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-
-    .btn-quick-action:hover {
-      transform: scale(1.1);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-    }
-    
-    .btn-quick-action:active {
-      transform: scale(0.95);
+    .btn-action-circle:active {
+      transform: scale(0.9);
     }
 
     #btn-speak-quick {
-      background: linear-gradient(135deg, #4CC9F0, #7000FF);
-      border-color: rgba(76, 201, 240, 0.4);
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
+      border-color: rgba(0, 242, 254, 0.4);
     }
-    #btn-speak-quick:hover {
-      box-shadow: 0 0 25px rgba(76, 201, 240, 0.5);
-    }
-
     #btn-restart-quick {
-      background: linear-gradient(135deg, #FF7D00, #FF007F);
-      border-color: rgba(255, 0, 127, 0.4);
-    }
-    #btn-restart-quick:hover {
-      box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
+      background: linear-gradient(135deg, #ff0844, #ffb199);
+      border-color: rgba(255, 8, 68, 0.4);
     }
 
-    .finger-zone {
-      cursor: pointer;
-    }
-
+    /* TRAZO E INTERACTIVIDAD DE LA MANO SVG */
     .hand-outline {
-      fill: #fcd5ce;
-      stroke: #12102e;
-      stroke-width: 5.5;
+      fill: #ffd1c4;
+      stroke: #090714;
+      stroke-width: 6;
       stroke-linejoin: round;
       stroke-linecap: round;
-      transition: all 0.3s ease;
     }
-
     .hand-shadow {
-      fill: #e8a598;
+      fill: #e09f8e;
       pointer-events: none;
     }
 
     .finger-overlay {
       fill: transparent;
       stroke: transparent;
-      stroke-width: 18;
-      transition: all 0.3s ease;
+      stroke-width: 20;
+      cursor: pointer;
+      transition: fill 0.2s;
     }
 
     .finger-zone:hover .finger-overlay {
-      fill: rgba(255, 255, 255, 0.22);
+      fill: rgba(255, 255, 255, 0.16);
     }
 
     .finger-zone.selected .finger-overlay {
       fill: var(--glow-color);
       stroke: #ffffff;
-      opacity: 0.85;
+      opacity: 0.8;
     }
 
     .finger-zone.has-word .finger-overlay {
       fill: var(--glow-color);
       stroke: #ffffff;
-      opacity: 0.7;
+      opacity: 0.55;
     }
 
+    /* Etiquetas sobre la mano */
     .finger-label-bg {
-      rx: 10px; ry: 10px;
-      fill: rgba(18, 16, 46, 0.85);
-      stroke: rgba(255, 255, 255, 0.15);
-      stroke-width: 1.2;
+      rx: 12px; ry: 12px;
+      fill: rgba(9, 7, 20, 0.88);
+      stroke: rgba(255, 255, 255, 0.12);
+      stroke-width: 1.5;
     }
-
     .finger-zone.has-word .finger-label-bg,
     .finger-zone.selected .finger-label-bg {
       fill: var(--glow-color);
@@ -292,18 +258,16 @@
       pointer-events: none;
       font-family: 'Outfit', sans-serif;
     }
-
     .finger-zone.has-word .finger-word-text,
     .finger-zone.selected .finger-word-text {
       fill: #ffffff;
     }
 
-    /* ===== CONTENEDOR DE SLOTS EN FORMATO "U" (Abajo de la mano) ===== */
+    /* ===== CONTENEDOR U DE SLOTS INFERIORES EN U ===== */
     #fingers-list-u {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      padding: 4px;
     }
 
     .finger-slot {
@@ -311,29 +275,25 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      padding: 10px 12px;
+      padding: 10px 14px;
       border-radius: var(--radius-md);
       background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.06);
       cursor: pointer;
-      transition: all 0.2s ease;
       min-height: 48px;
-    }
-
-    .finger-slot:hover {
-      background: rgba(255, 255, 255, 0.06);
+      transition: all 0.2s;
     }
 
     .finger-slot.active {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
       border-color: var(--active-color);
-      box-shadow: 0 4px 15px var(--glow-color);
+      box-shadow: 0 4px 16px var(--glow-color);
     }
 
     .finger-slot-left {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       min-width: 0;
       flex: 1;
     }
@@ -342,6 +302,7 @@
       width: 12px; height: 12px;
       border-radius: var(--radius-full);
       flex-shrink: 0;
+      box-shadow: 0 0 8px currentColor;
     }
 
     .finger-slot-text-content {
@@ -354,6 +315,7 @@
       font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     .finger-slot-word {
@@ -366,7 +328,7 @@
     }
 
     .finger-slot-word.empty {
-      color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.15);
       font-weight: 600;
     }
 
@@ -379,7 +341,6 @@
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       font-size: 0.75rem;
-      transition: all 0.2s;
       opacity: 0;
       pointer-events: none;
     }
@@ -388,21 +349,16 @@
       opacity: 1;
       pointer-events: all;
     }
-    .finger-clear-btn:hover {
-      background: rgba(239, 68, 68, 0.2);
-      color: #F87171;
-    }
 
-    /* ===== PANEL DERECHO DE PALABRAS ===== */
+    /* ===== LADO DERECHO: GRID DE PALABRAS / BOTONES ACCESIBLES ===== */
     #word-panel {
       display: grid;
       grid-template-rows: auto auto 1fr auto;
-      background: var(--glass-panel);
+      background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      padding: 20px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 12px 45px rgba(0,0,0,0.35);
+      padding: 16px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
       min-height: 0;
       gap: 12px;
     }
@@ -414,13 +370,12 @@
     }
 
     #active-finger-badge {
-      padding: 6px 18px;
+      padding: 6px 16px;
       border-radius: var(--radius-full);
       font-size: 0.85rem;
       font-weight: 900;
       color: #fff;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
     }
 
     #quick-text-container {
@@ -440,40 +395,34 @@
       color: white;
       font-family: 'Outfit', sans-serif;
       font-size: 1rem;
-      padding: 8px 12px;
+      padding: 6px 12px;
       font-weight: 600;
     }
     #quick-text-input::placeholder {
       color: var(--text-muted);
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
     .btn-quick-send {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
       color: white;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: var(--radius-md);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.1rem;
-      transition: all 0.2s;
-    }
-    .btn-quick-send:hover {
-      background: white;
-      color: #0f0a24;
     }
 
     #word-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 10px;
       overflow-y: auto;
       align-content: start;
-      padding-right: 6px;
     }
 
     .word-btn {
@@ -482,29 +431,26 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 12px 10px;
+      padding: 14px 10px;
       border-radius: var(--radius-md);
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.05);
       cursor: pointer;
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 1.05rem;
       text-align: center;
       color: white;
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      min-height: 76px; /* Altura ideal de toque PWA recomendada */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+
+    .word-btn:active {
+      transform: scale(0.96);
     }
 
     .word-emoji {
-      font-size: 1.4rem;
-    }
-
-    .word-btn:hover {
-      transform: translateY(-4px) scale(1.02);
-    }
-
-    .word-btn.selected {
-      border-color: rgba(255,255,255,0.85);
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.2);
+      font-size: 1.6rem;
     }
 
     #no-selection {
@@ -512,137 +458,217 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       text-align: center;
-      padding: 24px;
+      padding: 20px;
       height: 100%;
     }
 
     #no-selection .magic-hand {
-      font-size: 4.5rem;
+      font-size: 4rem;
       animation: magicWiggle 3s ease-in-out infinite;
+    }
+
+    @keyframes magicWiggle {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(10deg) scale(1.05); }
     }
 
     #btn-add-word {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       border-radius: var(--radius-md);
-      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border: 2px dashed rgba(255, 255, 255, 0.12);
       background: transparent;
       color: var(--text-muted);
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
 
+    /* MODAL DE AGREGAR */
     #modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(10, 5, 25, 0.85);
+      background: rgba(9, 7, 20, 0.88);
       backdrop-filter: blur(16px);
       display: flex; align-items: center; justify-content: center;
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease-out;
-      padding: 20px;
+      transition: opacity 0.2s ease-out;
+      padding: 16px;
     }
     #modal-overlay.open { opacity: 1; pointer-events: all; }
 
     #modal {
-      background: linear-gradient(135deg, #221a47 0%, #0f0a24 100%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 32px;
-      padding: 36px;
+      background: linear-gradient(135deg, #1d1838 0%, #090714 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      padding: 28px;
       width: 100%;
-      max-width: 440px;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+      max-width: 400px;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #modal h3 { font-size: 1.4rem; font-weight: 900; }
+    #modal p { font-size: 0.9rem; color: var(--text-muted); }
+
+    #modal label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    #modal input, #modal select {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      color: white;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      outline: none;
     }
 
     .modal-actions {
       display: flex;
-      gap: 16px;
-      margin-top: 8px;
+      gap: 12px;
+      margin-top: 12px;
     }
 
     .btn-modal {
       flex: 1;
-      padding: 16px;
+      padding: 14px;
       border-radius: var(--radius-md);
       border: none;
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 1rem;
       cursor: pointer;
     }
-    .btn-cancel { background: rgba(255,255,255,0.08); color: var(--text); }
+    .btn-cancel { background: rgba(255,255,255,0.06); color: var(--text); }
     .btn-add { background: linear-gradient(135deg, #7000FF, #4CC9F0); color: white; }
 
     #sentence-bar.speaking {
       border-color: rgba(76, 201, 240, 0.7);
-      box-shadow: 0 0 35px rgba(76, 201, 240, 0.3);
+      box-shadow: 0 0 30px rgba(76, 201, 240, 0.3);
     }
 
     .confetti {
       position: fixed;
-      width: 12px; height: 12px;
+      width: 10px; height: 10px;
       pointer-events: none;
       z-index: 200;
-      animation: confettiFall 1.2s forwards;
+      animation: confettiFall 1s forwards;
     }
-
     @keyframes confettiFall {
-      from { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-      to   { transform: translateY(180px) rotate(540deg) scale(0.5); opacity: 0; }
+      from { transform: translateY(0) rotate(0deg); opacity: 1; }
+      to   { transform: translateY(120px) rotate(360deg); opacity: 0; }
     }
 
-    @keyframes glowPulse {
-      0%   { box-shadow: 0 0 0 0px var(--color, rgba(255,255,255,0.4)); }
-      100% { box-shadow: 0 0 0 24px rgba(255,255,255,0); }
+    /* ===== OPTIMIZACIONES MULTIPANTALLA / RESPONSIVE (MÓVIL Y TABLET VERTICAL) ===== */
+    @media (max-width: 900px) {
+      #app {
+        padding: 8px;
+        gap: 8px;
+      }
+      #sentence-bar {
+        min-height: 72px;
+      }
+      .main-area {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1.15fr 0.85fr;
+        gap: 8px;
+      }
+      #hand-panel {
+        padding: 10px;
+        gap: 8px;
+      }
+      #hand-svg {
+        max-height: 220px;
+      }
+      .action-button-wing {
+        flex-direction: row;
+        right: auto;
+        left: 50%;
+        bottom: 5px;
+        top: auto;
+        transform: translateX(-50%);
+        gap: 24px;
+        z-index: 5;
+      }
+      .btn-action-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 1.7rem;
+      }
+      #fingers-list-u {
+        gap: 5px;
+      }
+      .finger-slot {
+        padding: 6px 10px;
+        min-height: 42px;
+      }
+      .finger-slot-word {
+        font-size: 0.8rem;
+      }
+      #word-panel {
+        padding: 10px;
+        gap: 8px;
+      }
+      #word-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+      .word-btn {
+        min-height: 58px;
+        font-size: 0.85rem;
+        padding: 8px 4px;
+      }
+      .word-emoji {
+        font-size: 1.3rem;
+      }
     }
-    .glow-pulse { animation: glowPulse 0.6s ease-out; }
 
-    @media (max-width: 768px) {
-      #app { padding: 10px; gap: 12px; }
-      .logo { font-size: 1.7rem; }
-      .main-area { grid-template-columns: 1fr; grid-template-rows: auto auto; gap: 12px; overflow-y: auto; }
-      #hand-panel { padding: 16px; }
-      .hand-layout-container { flex-direction: row; }
-      .hand-quick-actions { flex-direction: row; width: 100%; justify-content: center; }
-      .btn-quick-action { width: 64px; height: 64px; font-size: 1.8rem; }
-      #fingers-list-u { grid-template-columns: repeat(2, 1fr); }
-      #word-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    @media (max-height: 500px) and (orientation: landscape) {
+      .main-area {
+        grid-template-columns: 1.2fr 0.8fr;
+        grid-template-rows: 1fr;
+      }
+      #hand-svg {
+        max-height: 150px;
+      }
+      #fingers-list-u {
+        grid-template-columns: repeat(6, 1fr);
+      }
     }
   </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo-container">
-      <div class="logo">🤚 Mano Mágica</div>
-    </div>
-  </header>
-
-  <!-- BARRA DE ORACIÓN -->
+  <!-- BARRA DE ORACIÓN SUPERIOR -->
   <div id="sentence-bar" role="region" aria-label="Oración actual">
-    <span class="sentence-placeholder" id="sentence-placeholder">¡Formemos una oración! Toca un dedo o la palma... 👆</span>
+    <span class="sentence-placeholder" id="sentence-placeholder">🤚 ¡Toca un dedo o la palma para hablar!</span>
   </div>
 
   <!-- AREA PRINCIPAL -->
   <div class="main-area">
 
-    <!-- PANEL IZQUIERDO: MANO + CONTROLES ABAJO -->
+    <!-- PANEL DE LA MANO (Izquierdo) -->
     <div id="hand-panel">
       
-      <div class="hand-layout-container">
-        <!-- Mano SVG principal -->
+      <div class="hand-canvas-row">
+        <!-- Lienzo de la mano -->
         <div id="hand-svg-container">
           <svg id="hand-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-            <!-- Silueta Unificada de la mano -->
             <path class="hand-outline" d="
               M 205,440 
               C 195,395 185,360 178,350
@@ -660,50 +686,43 @@
               C 382,330 380,360 340,395
               C 290,425 230,425 210,440 Z" 
             />
-
-            <!-- Sombras anatómicas -->
             <path class="hand-shadow" d="M 82,310 C 110,340 180,380 230,370 C 310,350 350,330 385,278 C 375,340 340,395 340,395 C 290,425 230,425 210,440 Z" opacity="0.15" />
             <path d="M 185,280 C 205,305 245,315 285,300" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.25" />
             <path d="M 230,305 C 255,320 295,315 325,295" stroke="#b45309" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.2" />
 
-            <!-- ZONAS INTERACTIVAS -->
+            <!-- ZONAS INTERACTIVAS OPTIMIZADAS -->
             <!-- PALMA (Afecto) -->
-            <g class="finger-zone" id="fz-palm" data-finger="palm" role="button" style="--glow-color: var(--palm-color);">
+            <g class="finger-zone" id="fz-palm" data-finger="palm" role="button" style="--glow-color: var(--color-palm);">
               <path class="finger-overlay" d="M 183,275 C 190,260 210,250 240,248 C 287,246 287,246 287,246 C 353,256 353,256 353,256 C 387,286 385,360 340,400 C 290,430 230,430 192,390 Z" />
               <rect class="finger-label-bg" x="200" y="320" width="100" height="26" rx="13"/>
               <text class="finger-word-text" id="hw-palm" x="250" y="337">❤️ AFECTO</text>
             </g>
-
             <!-- 👍 PULGAR (Cómo) -->
-            <g class="finger-zone" id="fz-thumb" data-finger="thumb" role="button" style="--glow-color: var(--thumb-color);">
+            <g class="finger-zone" id="fz-thumb" data-finger="thumb" role="button" style="--glow-color: var(--color-thumb);">
               <path class="finger-overlay" d="M 195,370 C 145,340 75,325 80,300 C 85,280 145,268 185,282 Z" />
               <rect class="finger-label-bg" x="6" y="240" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-thumb" x="46" y="256">👍 CÓMO</text>
             </g>
-
             <!-- 👆 ÍNDICE (Quién) -->
-            <g class="finger-zone" id="fz-index" data-finger="index" role="button" style="--glow-color: var(--index-color);">
+            <g class="finger-zone" id="fz-index" data-finger="index" role="button" style="--glow-color: var(--color-index);">
               <path class="finger-overlay" d="M 160,250 C 142,168 182,90 210,100 C 228,115 200,205 240,248 Z" />
               <rect class="finger-label-bg" x="125" y="65" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-index" x="165" y="81">👆 QUIÉN</text>
             </g>
-
             <!-- 🖕 MEDIO (Verbo) -->
-            <g class="finger-zone" id="fz-middle" data-finger="middle" role="button" style="--glow-color: var(--middle-color);">
+            <g class="finger-zone" id="fz-middle" data-finger="middle" role="button" style="--glow-color: var(--color-middle);">
               <path class="finger-overlay" d="M 238,246 C 220,140 220,52 250,52 C 278,52 270,140 286,246 Z" />
               <rect class="finger-label-bg" x="210" y="20" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-middle" x="250" y="36">🖕 VERBO</text>
             </g>
-
             <!-- 💍 ANULAR (Objeto) -->
-            <g class="finger-zone" id="fz-ring" data-finger="ring" role="button" style="--glow-color: var(--ring-color);">
+            <g class="finger-zone" id="fz-ring" data-finger="ring" role="button" style="--glow-color: var(--color-ring);">
               <path class="finger-overlay" d="M 285,246 C 300,150 312,65 340,70 C 362,75 332,160 353,256 Z" />
               <rect class="finger-label-bg" x="305" y="35" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-ring" x="345" y="51">💍 OBJETO</text>
             </g>
-
             <!-- 🤙 MEÑIQUE (Cortesía) -->
-            <g class="finger-zone" id="fz-pinky" data-finger="pinky" role="button" style="--glow-color: var(--pinky-color);">
+            <g class="finger-zone" id="fz-pinky" data-finger="pinky" role="button" style="--glow-color: var(--color-pinky);">
               <path class="finger-overlay" d="M 350,256 C 378,175 404,102 425,115 C 440,128 400,200 387,286 Z" />
               <rect class="finger-label-bg" x="390" y="85" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-pinky" x="430" y="101">🤙 CORTESÍA</text>
@@ -711,60 +730,59 @@
           </svg>
         </div>
 
-        <!-- Botones Rápidos de Hablar y Borrar a la derecha de la mano -->
-        <div class="hand-quick-actions">
-          <button class="btn-quick-action" id="btn-speak-quick" title="Hablar oración" aria-label="Hablar">👄</button>
-          <button class="btn-quick-action" id="btn-restart-quick" title="Borrar oración" aria-label="Borrar">♻️</button>
+        <!-- Botones de Acción de Ala -->
+        <div class="action-button-wing">
+          <button class="btn-action-circle" id="btn-speak-quick" title="Hablar oración">👄</button>
+          <button class="btn-action-circle" id="btn-restart-quick" title="Borrar oración">♻️</button>
         </div>
       </div>
 
-      <!-- Slots inferiores en U -->
+      <!-- slots en forma de U -->
       <div id="fingers-list-u" role="list"></div>
 
     </div>
 
-    <!-- PANEL DERECHO: SELECCIÓN DE PALABRAS -->
+    <!-- PANEL DERECHO DE SELECCIÓN DE PALABRAS -->
     <div id="word-panel">
       <div id="word-panel-header">
         <span class="panel-header-title">Palabras disponibles</span>
         <span id="active-finger-badge">—</span>
       </div>
 
-      <!-- Input de Escritura Libre Rápido -->
       <div id="quick-text-container" style="display: none;">
         <input type="text" id="quick-text-input" placeholder="Escribir palabra libre..." maxlength="30" />
         <button class="btn-quick-send" id="btn-quick-send" title="Confirmar palabra">✍️</button>
       </div>
 
-      <!-- Estado Vacío -->
+      <!-- Estado vacío -->
       <div id="no-selection">
         <div class="magic-hand">✨🖐️</div>
         <p>Selecciona una sección de la mano en la pantalla para ver y elegir sus palabras.</p>
       </div>
 
-      <!-- Cuadrícula interactiva -->
+      <!-- Grid de botones -->
       <div id="word-grid" style="display:none;"></div>
 
-      <!-- Botón Agregar -->
+      <!-- Agregar palabra -->
       <button id="btn-add-word" style="display:none;">
         <span>➕</span> Crear nueva palabra
       </button>
     </div>
 
-  </div><!-- fin main-area -->
+  </div>
 
-</div><!-- fin app -->
+</div>
 
-<!-- MODAL REGISTRO PALABRA NUEVA -->
+<!-- REGISTRO PALABRA NUEVA -->
 <div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div id="modal">
     <h3 id="modal-title">➕ Nueva Palabra</h3>
     <p>Agrega una palabra personalizada a este dedo o palma.</p>
 
-    <label for="modal-word-input">Palabra (EJ: ABRACITO)</label>
+    <label for="modal-word-input">Palabra</label>
     <input type="text" id="modal-word-input" placeholder="Escribe aquí..." maxlength="20" autocomplete="off" />
 
-    <label for="modal-emoji-input">Emoji representativo (EJ: 🤗)</label>
+    <label for="modal-emoji-input">Emoji representativo</label>
     <input type="text" id="modal-emoji-input" placeholder="Elige un emoji..." maxlength="5" />
 
     <label for="modal-finger-select">Sección correspondiente</label>
@@ -789,16 +807,16 @@
 // BASE DE DATOS Y VOCABULARIO
 // ===================================================
 const FINGERS = [
-  { id: 'index',  emoji: '👆', label: 'Quién',       color: 'var(--index-color)',  dark: 'var(--index-dark)' },
-  { id: 'middle', emoji: '🖕', label: 'Verbo',       color: 'var(--middle-color)', dark: 'var(--middle-dark)' },
-  { id: 'ring',   emoji: '💍', label: 'Objeto',      color: 'var(--ring-color)',   dark: 'var(--ring-dark)' },
-  { id: 'thumb',  emoji: '👍', label: 'Cómo/Lugar',  color: 'var(--thumb-color)',  dark: 'var(--thumb-dark)' },
-  { id: 'pinky',  emoji: '🤙', label: 'Cortesía',    color: 'var(--pinky-color)',  dark: 'var(--pinky-dark)' },
-  { id: 'palm',   emoji: '❤️', label: 'Afecto',      color: 'var(--palm-color)',   dark: 'var(--palm-dark)' }
+  { id: 'index',  emoji: '👆', label: 'Quién',       color: 'var(--color-index)',  dark: 'var(--color-index)' },
+  { id: 'middle', emoji: '🖕', label: 'Verbo',       color: 'var(--color-middle)', dark: 'var(--color-middle)' },
+  { id: 'ring',   emoji: '💍', label: 'Objeto',      color: 'var(--color-ring)',   dark: 'var(--color-ring)' },
+  { id: 'thumb',  emoji: '👍', label: 'Cómo/Lugar',  color: 'var(--color-thumb)',  dark: 'var(--color-thumb)' },
+  { id: 'pinky',  emoji: '🤙', label: 'Cortesía',    color: 'var(--color-pinky)',  dark: 'var(--color-pinky)' },
+  { id: 'palm',   emoji: '❤️', label: 'Afecto',      color: 'var(--color-palm)',   dark: 'var(--color-palm)' }
 ];
 
 const INITIAL_WORDS = {
-  index: [ // Quién
+  index: [
     { text: 'YO', emoji: '👦' },
     { text: 'PAPA', emoji: '👨' },
     { text: 'MAMA', emoji: '👩' },
@@ -808,13 +826,13 @@ const INITIAL_WORDS = {
     { text: 'AMIGA', emoji: '👧' },
     { text: 'PROFE', emoji: '👩‍🏫' }
   ],
-  middle: [ // Verbo
+  middle: [
     { text: 'QUIERO', emoji: '🙋‍♂️' },
     { text: 'NECESITO', emoji: '⚠️' },
     { text: 'TENGO', emoji: '⚡' },
     { text: 'QUIERO IR', emoji: '🚗' }
   ],
-  ring: [ // Objeto
+  ring: [
     { text: 'AGUA', emoji: '💧' },
     { text: 'COMIDA', emoji: '🍎' },
     { text: 'TABLET', emoji: '📱' },
@@ -826,18 +844,18 @@ const INITIAL_WORDS = {
     { text: 'DORMIR', emoji: '😴' },
     { text: 'TELEVISIÓN', emoji: '📺' }
   ],
-  thumb: [ // Cómo / Lugar
+  thumb: [
     { text: 'AQUÍ', emoji: '📍' },
     { text: 'AFUERA', emoji: '🌳' },
     { text: 'AHORA', emoji: '⏰' },
     { text: 'EN CASA', emoji: '🏠' }
   ],
-  pinky: [ // Cortesía
+  pinky: [
     { text: 'POR FAVOR', emoji: '🙏' },
     { text: 'GRACIAS', emoji: '💖' },
     { text: 'AYUDA', emoji: '🆘' }
   ],
-  palm: [ // Afecto (Actualizado: con molesto y triste)
+  palm: [
     { text: 'TE QUIERO', emoji: '❤️' },
     { text: 'ABRAZO', emoji: '🤗' },
     { text: 'BESO', emoji: '😘' },
@@ -847,9 +865,6 @@ const INITIAL_WORDS = {
   ]
 };
 
-// ===================================================
-// AUDIO EFECTOS (SINTETIZADOS)
-// ===================================================
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playBeep(type) {
   try {
@@ -884,10 +899,6 @@ function playBeep(type) {
   } catch(e) {}
 }
 
-// ===================================================
-// ESTADO
-// ===================================================
-// Incrementamos a mm_words_v7 para aplicar la nueva actualización
 let wordLibrary = JSON.parse(localStorage.getItem('mm_words_v7') || 'null') || INITIAL_WORDS;
 let selectedWords = { thumb: null, index: null, middle: null, ring: null, pinky: null, palm: null };
 let activeFinger = null;
@@ -897,9 +908,6 @@ function saveLibrary() {
   localStorage.setItem('mm_words_v7', JSON.stringify(wordLibrary));
 }
 
-// ===================================================
-// RENDERIZAR VISTAS
-// ===================================================
 function renderFingerSlots() {
   const list = document.getElementById('fingers-list-u');
   list.innerHTML = '';
@@ -911,7 +919,7 @@ function renderFingerSlots() {
     
     slot.innerHTML = `
       <div class="finger-slot-left">
-        <div class="finger-dot" style="background-color:${f.color}"></div>
+        <div class="finger-dot" style="background-color:${f.color}; color:${f.color}"></div>
         <div class="finger-slot-text-content">
           <div class="finger-slot-name">${f.emoji} ${f.label}</div>
           <div class="finger-slot-word ${selectedWords[f.id] ? '' : 'empty'}">
@@ -952,7 +960,6 @@ function updateHandSVG() {
       const defaultLabels = { thumb: '👍 CÓMO', index: '👆 QUIÉN', middle: '🖕 VERBO', ring: '💍 OBJETO', pinky: '🤙 CORTESÍA', palm: '❤️ AFECTO' };
       txt.textContent = defaultLabels[f.id];
     }
-    
     zone.classList.toggle('selected', activeFinger === f.id);
   });
 }
@@ -960,22 +967,18 @@ function updateHandSVG() {
 function updateSentenceBar() {
   const bar = document.getElementById('sentence-bar');
   const placeholder = document.getElementById('sentence-placeholder');
-  
   const chips = bar.querySelectorAll('.sentence-chip');
   chips.forEach(c => c.remove());
 
   if (sentenceSequence.length === 0) {
-    placeholder.style.display = 'block';
+    placeholder.style.display = 'flex';
   } else {
     placeholder.style.display = 'none';
-    
     sentenceSequence.forEach(item => {
       const chip = document.createElement('span');
       chip.className = 'sentence-chip';
-      
       const finger = FINGERS.find(f => f.id === item.fingerId);
-      chip.style.backgroundColor = finger ? finger.dark : '#7000FF';
-      
+      chip.style.backgroundColor = finger ? finger.color : '#7000FF';
       chip.innerHTML = `
         <span class="chip-emoji">${item.emoji}</span>
         <span>${item.text}</span>
@@ -1013,7 +1016,7 @@ function renderWordPicker() {
   quickInput.placeholder = `Escribir en ${f.label}...`;
 
   badge.textContent = `${f.emoji} ${f.label}`;
-  badge.style.backgroundColor = f.dark;
+  badge.style.backgroundColor = f.color;
 
   grid.innerHTML = '';
   const list = wordLibrary[activeFinger] || [];
@@ -1022,7 +1025,7 @@ function renderWordPicker() {
     const btn = document.createElement('button');
     btn.className = 'word-btn';
     btn.style.backgroundColor = 'rgba(255,255,255,0.03)';
-    btn.style.borderLeft = `5px solid ${f.dark}`;
+    btn.style.borderLeft = `5px solid ${f.color}`;
     
     if (selectedWords[activeFinger] && selectedWords[activeFinger].text === item.text) {
       btn.classList.add('selected');
@@ -1039,7 +1042,6 @@ function renderWordPicker() {
       selectWord(activeFinger, item);
       burstConfetti();
     });
-    
     grid.appendChild(btn);
   });
 }
@@ -1067,7 +1069,6 @@ function setActiveFinger(fingerId) {
 
 function selectWord(fingerId, item) {
   selectedWords[fingerId] = item;
-  
   const index = sentenceSequence.findIndex(s => s.fingerId === fingerId);
   if (index !== -1) {
     sentenceSequence[index] = { fingerId, text: item.text, emoji: item.emoji };
@@ -1090,7 +1091,6 @@ function selectWord(fingerId, item) {
 function clearFinger(fingerId) {
   selectedWords[fingerId] = null;
   sentenceSequence = sentenceSequence.filter(s => s.fingerId !== fingerId);
-  
   updateSentenceBar();
   updateHandSVG();
   renderFingerSlots();
@@ -1110,7 +1110,6 @@ function restart() {
 
 function speakSentence() {
   if (sentenceSequence.length === 0) return;
-  
   const phrase = sentenceSequence.map(s => s.text).join(' ');
   
   window.speechSynthesis.cancel();
@@ -1123,22 +1122,21 @@ function speakSentence() {
   
   utterance.onend = () => bar.classList.remove('speaking');
   utterance.onerror = () => bar.classList.remove('speaking');
-  
   window.speechSynthesis.speak(utterance);
 }
 
 function burstConfetti() {
   const colors = ['#FFD166','#4CC9F0','#06D6A0','#FF007F','#FF7D00'];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 8; i++) {
     const el = document.createElement('div');
     el.className = 'confetti';
     el.style.left = (Math.random() * 80 + 10) + 'vw';
     el.style.top  = (Math.random() * 30 + 10) + 'vh';
     el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
     el.style.borderRadius = '50%';
-    el.style.animationDuration = (Math.random() * 0.4 + 0.8) + 's';
+    el.style.animationDuration = (Math.random() * 0.4 + 0.6) + 's';
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 1200);
+    setTimeout(() => el.remove(), 1000);
   }
 }
 
@@ -1168,9 +1166,7 @@ document.getElementById('modal-confirm').addEventListener('click', () => {
     inputWord.focus();
     return;
   }
-
   if (!wordLibrary[fng]) wordLibrary[fng] = [];
-  
   if (!wordLibrary[fng].some(w => w.text === txt)) {
     wordLibrary[fng].push({ text: txt, emoji: emo });
     saveLibrary();
@@ -1183,7 +1179,6 @@ document.getElementById('modal-confirm').addEventListener('click', () => {
 
 document.getElementById('btn-speak-quick').addEventListener('click', speakSentence);
 document.getElementById('btn-restart-quick').addEventListener('click', restart);
-
 document.getElementById('btn-quick-send').addEventListener('click', sendQuickText);
 document.getElementById('quick-text-input').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
