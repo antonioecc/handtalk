@@ -13,22 +13,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <style>
-    /* ===== SISTEMA DE DISEÑO PREMIUM (MODERNO, VIBRANTE Y ACCESIBLE) ===== */
+    /* ===== SISTEMA DE DISEÑO PREMIUM ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Paleta de Colores de Alto Contraste y Amigables */
-      --color-index:   #FFD166; /* Amarillo pastel brillante */
-      --color-middle:  #4CC9F0; /* Celeste cian */
-      --color-ring:    #06D6A0; /* Verde esmeralda */
-      --color-pinky:   #FF7D00; /* Naranja encendido */
-      --color-thumb:   #FF007F; /* Rosa neón */
-      --color-palm:    #A78BFA; /* Violeta/lavanda */
+      --color-index:   #FFD166;
+      --color-middle:  #4CC9F0;
+      --color-ring:    #06D6A0;
+      --color-pinky:   #FF7D00;
+      --color-thumb:   #FF007F;
+      --color-palm:    #A78BFA;
 
-      --bg-dark: #090714;
       --bg-gradient: radial-gradient(circle at 50% 50%, #171330 0%, #090714 80%);
       --glass: rgba(255, 255, 255, 0.04);
-      --glass-active: rgba(255, 255, 255, 0.08);
       --glass-border: rgba(255, 255, 255, 0.07);
       --text: #F9FAFB;
       --text-muted: #9CA3AF;
@@ -50,8 +47,8 @@
     }
 
     #app {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: auto 1fr; /* Solamente la barra de oración arriba y todo el espacio de pantalla para la mano/palabras */
       height: 100dvh;
       width: 100vw;
       padding: 12px;
@@ -59,84 +56,84 @@
       box-sizing: border-box;
     }
 
-    /* BARRA SUPERIOR: ORACIÓN */
+    /* BARRA DE ORACIÓN COMPACTA Y BAJA (Ocupa solo el alto del chip de palabras) */
     #sentence-bar {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--glass-border);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       border-radius: var(--radius-md);
-      padding: 12px 16px;
-      min-height: 80px;
-      max-height: 100px;
-      overflow-y: auto;
+      padding: 8px 14px;
+      min-height: 52px; /* Reducida la altura para dar máxima prioridad a lo de abajo */
+      max-height: 60px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 8px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-wrap: nowrap;
       backdrop-filter: blur(20px);
+      scrollbar-width: none; /* Ocultar scrollbars */
     }
+    #sentence-bar::-webkit-scrollbar { display: none; }
 
     .sentence-placeholder {
       color: var(--text-muted);
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       text-align: center;
       width: 100%;
       letter-spacing: 0.5px;
-      opacity: 0.8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      opacity: 0.7;
     }
 
     .sentence-chip {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
+      gap: 6px;
+      padding: 6px 12px;
       border-radius: var(--radius-md);
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-weight: 900;
       color: #fff;
-      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      animation: popIn 0.2s forwards;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.2);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .sentence-chip .chip-emoji {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
     }
 
     @keyframes popIn {
-      from { transform: scale(0.8) translateY(8px); opacity: 0; }
-      to   { transform: scale(1) translateY(0); opacity: 1; }
+      from { transform: scale(0.8); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
     }
 
-    /* ===== AREA PRINCIPAL: MAQUETACIÓN PARA TABLETS (EN L) ===== */
+    /* AREA PRINCIPAL: MAXIMIZADA AL 100% DEL ESPACIO RESTANTE */
     .main-area {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* Mitad y mitad en tablet horizontal para el balance perfecto */
-      gap: 14px;
-      flex: 1;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 12px;
       min-height: 0;
+      height: 100%;
     }
 
     /* LADO IZQUIERDO: COMUNICADOR VISUAL DE LA MANO */
     #hand-panel {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: 1fr auto;
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 12px;
       box-shadow: 0 16px 40px rgba(0,0,0,0.4);
       min-height: 0;
-      justify-content: space-between;
-      gap: 12px;
+      height: 100%;
+      gap: 10px;
     }
 
-    /* Contenedor central de la mano y los botones de acción rápida */
     .hand-canvas-row {
       display: flex;
       align-items: center;
@@ -152,17 +149,16 @@
       justify-content: center;
       width: 100%;
       height: 100%;
-      max-height: 280px;
     }
 
     #hand-svg {
       width: 100%;
       height: 100%;
-      max-height: 280px;
+      max-height: 380px; /* Incrementado sustancialmente para ocupar todo el espacio disponible */
       filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4));
     }
 
-    /* Botones rápidos de hablar y borrar flotantes o posicionados a la izquierda/derecha de la mano */
+    /* Botones rápidos de hablar y borrar al lado de la mano */
     .action-button-wing {
       display: flex;
       flex-direction: column;
@@ -174,18 +170,18 @@
     }
 
     .btn-action-circle {
-      width: 72px;
-      height: 72px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       border: 2px solid var(--glass-border);
       color: white;
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 10px 24px rgba(0,0,0,0.4);
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.2s ease;
     }
     .btn-action-circle:active {
       transform: scale(0.9);
@@ -200,7 +196,6 @@
       border-color: rgba(255, 8, 68, 0.4);
     }
 
-    /* TRAZO E INTERACTIVIDAD DE LA MANO SVG */
     .hand-outline {
       fill: #ffd1c4;
       stroke: #090714;
@@ -218,7 +213,6 @@
       stroke: transparent;
       stroke-width: 20;
       cursor: pointer;
-      transition: fill 0.2s;
     }
 
     .finger-zone:hover .finger-overlay {
@@ -237,7 +231,6 @@
       opacity: 0.55;
     }
 
-    /* Etiquetas sobre la mano */
     .finger-label-bg {
       rx: 12px; ry: 12px;
       fill: rgba(9, 7, 20, 0.88);
@@ -263,46 +256,43 @@
       fill: #ffffff;
     }
 
-    /* ===== CONTENEDOR U DE SLOTS INFERIORES EN U ===== */
+    /* Slots inferiores en U */
     #fingers-list-u {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 6px;
     }
 
     .finger-slot {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding: 10px 14px;
+      gap: 6px;
+      padding: 8px 12px;
       border-radius: var(--radius-md);
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255,255,255,0.06);
       cursor: pointer;
-      min-height: 48px;
-      transition: all 0.2s;
+      min-height: 44px;
     }
 
     .finger-slot.active {
       background: rgba(255, 255, 255, 0.06);
       border-color: var(--active-color);
-      box-shadow: 0 4px 16px var(--glow-color);
     }
 
     .finger-slot-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       min-width: 0;
       flex: 1;
     }
 
     .finger-dot {
-      width: 12px; height: 12px;
+      width: 10px; height: 10px;
       border-radius: var(--radius-full);
       flex-shrink: 0;
-      box-shadow: 0 0 8px currentColor;
     }
 
     .finger-slot-text-content {
@@ -311,15 +301,14 @@
     }
 
     .finger-slot-name {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       font-weight: 800;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.03em;
     }
 
     .finger-slot-word {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 900;
       color: #fff;
       white-space: nowrap;
@@ -336,11 +325,11 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255,255,255,0.08);
       color: var(--text-muted);
-      width: 24px; height: 24px;
+      width: 22px; height: 22px;
       border-radius: var(--radius-full);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       opacity: 0;
       pointer-events: none;
     }
@@ -350,17 +339,18 @@
       pointer-events: all;
     }
 
-    /* ===== LADO DERECHO: GRID DE PALABRAS / BOTONES ACCESIBLES ===== */
+    /* ===== LADO DERECHO: PALABRAS ===== */
     #word-panel {
       display: grid;
       grid-template-rows: auto auto 1fr auto;
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 14px;
       box-shadow: 0 16px 40px rgba(0,0,0,0.4);
       min-height: 0;
-      gap: 12px;
+      height: 100%;
+      gap: 10px;
     }
 
     #word-panel-header {
@@ -370,9 +360,9 @@
     }
 
     #active-finger-badge {
-      padding: 6px 16px;
+      padding: 5px 12px;
       border-radius: var(--radius-full);
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       font-weight: 900;
       color: #fff;
       text-transform: uppercase;
@@ -380,11 +370,11 @@
 
     #quick-text-container {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
-      padding: 6px;
+      padding: 4px;
     }
 
     #quick-text-input {
@@ -394,33 +384,29 @@
       outline: none;
       color: white;
       font-family: 'Outfit', sans-serif;
-      font-size: 1rem;
-      padding: 6px 12px;
+      font-size: 0.9rem;
+      padding: 6px 10px;
       font-weight: 600;
-    }
-    #quick-text-input::placeholder {
-      color: var(--text-muted);
-      opacity: 0.5;
     }
 
     .btn-quick-send {
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
       color: white;
-      width: 44px;
-      height: 44px;
+      width: 38px;
+      height: 38px;
       border-radius: var(--radius-md);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
     #word-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 8px;
       overflow-y: auto;
       align-content: start;
     }
@@ -430,27 +416,25 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      padding: 14px 10px;
+      gap: 4px;
+      padding: 10px 8px;
       border-radius: var(--radius-md);
       border: 1px solid rgba(255,255,255,0.05);
       cursor: pointer;
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       text-align: center;
       color: white;
-      min-height: 76px; /* Altura ideal de toque PWA recomendada */
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: all 0.2s ease;
+      min-height: 64px; /* Optimizada altura de toque */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-
     .word-btn:active {
       transform: scale(0.96);
     }
 
     .word-emoji {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
     }
 
     #no-selection {
@@ -458,37 +442,32 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 12px;
       text-align: center;
-      padding: 20px;
+      padding: 16px;
       height: 100%;
     }
 
     #no-selection .magic-hand {
-      font-size: 4rem;
+      font-size: 3.5rem;
       animation: magicWiggle 3s ease-in-out infinite;
-    }
-
-    @keyframes magicWiggle {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(10deg) scale(1.05); }
     }
 
     #btn-add-word {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border-radius: var(--radius-md);
       border: 2px dashed rgba(255, 255, 255, 0.12);
       background: transparent;
       color: var(--text-muted);
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
 
-    /* MODAL DE AGREGAR */
+    /* MODAL */
     #modal-overlay {
       position: fixed; inset: 0;
       background: rgba(9, 7, 20, 0.88);
@@ -497,7 +476,7 @@
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s ease-out;
+      transition: opacity 0.2s;
       padding: 16px;
     }
     #modal-overlay.open { opacity: 1; pointer-events: all; }
@@ -506,93 +485,68 @@
       background: linear-gradient(135deg, #1d1838 0%, #090714 100%);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 28px;
-      padding: 28px;
+      padding: 24px;
       width: 100%;
-      max-width: 400px;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+      max-width: 380px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-    }
-
-    #modal h3 { font-size: 1.4rem; font-weight: 900; }
-    #modal p { font-size: 0.9rem; color: var(--text-muted); }
-
-    #modal label {
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-top: 4px;
+      gap: 10px;
     }
 
     #modal input, #modal select {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-md);
-      padding: 12px;
+      padding: 10px;
       color: white;
       font-family: 'Outfit', sans-serif;
-      font-size: 1rem;
       outline: none;
     }
 
     .modal-actions {
       display: flex;
-      gap: 12px;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .btn-modal {
       flex: 1;
-      padding: 14px;
+      padding: 12px;
       border-radius: var(--radius-md);
       border: none;
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 1rem;
       cursor: pointer;
     }
     .btn-cancel { background: rgba(255,255,255,0.06); color: var(--text); }
     .btn-add { background: linear-gradient(135deg, #7000FF, #4CC9F0); color: white; }
 
-    #sentence-bar.speaking {
-      border-color: rgba(76, 201, 240, 0.7);
-      box-shadow: 0 0 30px rgba(76, 201, 240, 0.3);
-    }
-
-    .confetti {
-      position: fixed;
-      width: 10px; height: 10px;
-      pointer-events: none;
-      z-index: 200;
-      animation: confettiFall 1s forwards;
-    }
-    @keyframes confettiFall {
-      from { transform: translateY(0) rotate(0deg); opacity: 1; }
-      to   { transform: translateY(120px) rotate(360deg); opacity: 0; }
-    }
-
-    /* ===== OPTIMIZACIONES MULTIPANTALLA / RESPONSIVE (MÓVIL Y TABLET VERTICAL) ===== */
+    /* ===== OPTIMIZACIÓN EN DISPOSITIVOS MÓVILES (VERTICAL) ===== */
     @media (max-width: 900px) {
       #app {
+        grid-template-rows: auto 1fr; /* Solo la barra compacta y el resto 1fr */
         padding: 8px;
         gap: 8px;
       }
       #sentence-bar {
-        min-height: 72px;
+        min-height: 52px;
+        max-height: 52px;
+        padding: 6px 12px;
+      }
+      .sentence-placeholder {
+        font-size: 0.85rem;
       }
       .main-area {
         grid-template-columns: 1fr;
-        grid-template-rows: 1.15fr 0.85fr;
+        grid-template-rows: 1.15fr 0.85fr; /* Mano arriba ocupando más de la mitad y palabras abajo */
         gap: 8px;
       }
       #hand-panel {
-        padding: 10px;
-        gap: 8px;
+        padding: 8px;
+        gap: 6px;
       }
       #hand-svg {
-        max-height: 220px;
+        max-height: 250px; /* Aumentado sustancialmente */
       }
       .action-button-wing {
         flex-direction: row;
@@ -601,52 +555,35 @@
         bottom: 5px;
         top: auto;
         transform: translateX(-50%);
-        gap: 24px;
-        z-index: 5;
+        gap: 20px;
       }
       .btn-action-circle {
-        width: 60px;
-        height: 60px;
-        font-size: 1.7rem;
+        width: 54px;
+        height: 54px;
+        font-size: 1.5rem;
       }
       #fingers-list-u {
-        gap: 5px;
+        gap: 4px;
       }
       .finger-slot {
-        padding: 6px 10px;
-        min-height: 42px;
+        padding: 6px 8px;
+        min-height: 38px;
       }
       .finger-slot-word {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
       }
       #word-panel {
-        padding: 10px;
-        gap: 8px;
+        padding: 8px;
+        gap: 6px;
       }
       #word-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
+        gap: 5px;
       }
       .word-btn {
-        min-height: 58px;
-        font-size: 0.85rem;
-        padding: 8px 4px;
-      }
-      .word-emoji {
-        font-size: 1.3rem;
-      }
-    }
-
-    @media (max-height: 500px) and (orientation: landscape) {
-      .main-area {
-        grid-template-columns: 1.2fr 0.8fr;
-        grid-template-rows: 1fr;
-      }
-      #hand-svg {
-        max-height: 150px;
-      }
-      #fingers-list-u {
-        grid-template-columns: repeat(6, 1fr);
+        min-height: 50px;
+        font-size: 0.8rem;
+        padding: 6px 2px;
       }
     }
   </style>
@@ -654,9 +591,9 @@
 <body>
 <div id="app">
 
-  <!-- BARRA DE ORACIÓN SUPERIOR -->
+  <!-- BARRA DE ORACIÓN COMPACTADA -->
   <div id="sentence-bar" role="region" aria-label="Oración actual">
-    <span class="sentence-placeholder" id="sentence-placeholder">🤚 ¡Toca un dedo o la palma para hablar!</span>
+    <span class="sentence-placeholder" id="sentence-placeholder">¡Formemos una oración! Toca la mano... 👆</span>
   </div>
 
   <!-- AREA PRINCIPAL -->
@@ -666,7 +603,6 @@
     <div id="hand-panel">
       
       <div class="hand-canvas-row">
-        <!-- Lienzo de la mano -->
         <div id="hand-svg-container">
           <svg id="hand-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
             <path class="hand-outline" d="
@@ -690,38 +626,32 @@
             <path d="M 185,280 C 205,305 245,315 285,300" stroke="#b45309" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.25" />
             <path d="M 230,305 C 255,320 295,315 325,295" stroke="#b45309" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.2" />
 
-            <!-- ZONAS INTERACTIVAS OPTIMIZADAS -->
-            <!-- PALMA (Afecto) -->
+            <!-- ZONAS INTERACTIVAS -->
             <g class="finger-zone" id="fz-palm" data-finger="palm" role="button" style="--glow-color: var(--color-palm);">
               <path class="finger-overlay" d="M 183,275 C 190,260 210,250 240,248 C 287,246 287,246 287,246 C 353,256 353,256 353,256 C 387,286 385,360 340,400 C 290,430 230,430 192,390 Z" />
               <rect class="finger-label-bg" x="200" y="320" width="100" height="26" rx="13"/>
               <text class="finger-word-text" id="hw-palm" x="250" y="337">❤️ AFECTO</text>
             </g>
-            <!-- 👍 PULGAR (Cómo) -->
             <g class="finger-zone" id="fz-thumb" data-finger="thumb" role="button" style="--glow-color: var(--color-thumb);">
               <path class="finger-overlay" d="M 195,370 C 145,340 75,325 80,300 C 85,280 145,268 185,282 Z" />
               <rect class="finger-label-bg" x="6" y="240" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-thumb" x="46" y="256">👍 CÓMO</text>
             </g>
-            <!-- 👆 ÍNDICE (Quién) -->
             <g class="finger-zone" id="fz-index" data-finger="index" role="button" style="--glow-color: var(--color-index);">
               <path class="finger-overlay" d="M 160,250 C 142,168 182,90 210,100 C 228,115 200,205 240,248 Z" />
               <rect class="finger-label-bg" x="125" y="65" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-index" x="165" y="81">👆 QUIÉN</text>
             </g>
-            <!-- 🖕 MEDIO (Verbo) -->
             <g class="finger-zone" id="fz-middle" data-finger="middle" role="button" style="--glow-color: var(--color-middle);">
               <path class="finger-overlay" d="M 238,246 C 220,140 220,52 250,52 C 278,52 270,140 286,246 Z" />
               <rect class="finger-label-bg" x="210" y="20" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-middle" x="250" y="36">🖕 VERBO</text>
             </g>
-            <!-- 💍 ANULAR (Objeto) -->
             <g class="finger-zone" id="fz-ring" data-finger="ring" role="button" style="--glow-color: var(--color-ring);">
               <path class="finger-overlay" d="M 285,246 C 300,150 312,65 340,70 C 362,75 332,160 353,256 Z" />
               <rect class="finger-label-bg" x="305" y="35" width="80" height="24" rx="12"/>
               <text class="finger-word-text" id="hw-ring" x="345" y="51">💍 OBJETO</text>
             </g>
-            <!-- 🤙 MEÑIQUE (Cortesía) -->
             <g class="finger-zone" id="fz-pinky" data-finger="pinky" role="button" style="--glow-color: var(--color-pinky);">
               <path class="finger-overlay" d="M 350,256 C 378,175 404,102 425,115 C 440,128 400,200 387,286 Z" />
               <rect class="finger-label-bg" x="390" y="85" width="80" height="24" rx="12"/>
@@ -730,19 +660,17 @@
           </svg>
         </div>
 
-        <!-- Botones de Acción de Ala -->
         <div class="action-button-wing">
           <button class="btn-action-circle" id="btn-speak-quick" title="Hablar oración">👄</button>
           <button class="btn-action-circle" id="btn-restart-quick" title="Borrar oración">♻️</button>
         </div>
       </div>
 
-      <!-- slots en forma de U -->
       <div id="fingers-list-u" role="list"></div>
 
     </div>
 
-    <!-- PANEL DERECHO DE SELECCIÓN DE PALABRAS -->
+    <!-- PANEL DERECHO DE PALABRAS -->
     <div id="word-panel">
       <div id="word-panel-header">
         <span class="panel-header-title">Palabras disponibles</span>
@@ -754,16 +682,13 @@
         <button class="btn-quick-send" id="btn-quick-send" title="Confirmar palabra">✍️</button>
       </div>
 
-      <!-- Estado vacío -->
       <div id="no-selection">
         <div class="magic-hand">✨🖐️</div>
-        <p>Selecciona una sección de la mano en la pantalla para ver y elegir sus palabras.</p>
+        <p>Selecciona una sección de la mano para ver palabras.</p>
       </div>
 
-      <!-- Grid de botones -->
       <div id="word-grid" style="display:none;"></div>
 
-      <!-- Agregar palabra -->
       <button id="btn-add-word" style="display:none;">
         <span>➕</span> Crear nueva palabra
       </button>
@@ -773,7 +698,7 @@
 
 </div>
 
-<!-- REGISTRO PALABRA NUEVA -->
+<!-- MODAL REGISTRO -->
 <div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div id="modal">
     <h3 id="modal-title">➕ Nueva Palabra</h3>
