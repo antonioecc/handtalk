@@ -48,7 +48,9 @@
 
     #app {
       display: grid;
-      grid-template-rows: auto 1fr; /* Solamente la barra de oración arriba y todo el espacio de pantalla para la mano/palabras */
+      grid-template-rows: 1.15fr 0.85fr; /* LA RELACIÓN INVERSA SOLICITADA POR EL USUARIO */
+      /* El cuadro amarillo (antiguo azul, la barra superior) ahora tiene la prioridad del alto grande */
+      /* El cuadro rojo (antiguo verde, la mano y palabras) se reduce al espacio inferior */
       height: 100dvh;
       width: 100vw;
       padding: 12px;
@@ -56,62 +58,63 @@
       box-sizing: border-box;
     }
 
-    /* BARRA DE ORACIÓN COMPACTA Y BAJA (Ocupa solo el alto del chip de palabras) */
+    /* BARRA DE ORACIÓN EXPANDIDA (Tamaño del Cuadro Amarillo / Antiguo cuadro azul) */
     #sentence-bar {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--glass-border);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      border-radius: var(--radius-md);
-      padding: 8px 14px;
-      min-height: 52px; /* Reducida la altura para dar máxima prioridad a lo de abajo */
-      max-height: 60px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 24px;
       display: flex;
+      align-content: center;
       align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      white-wrap: nowrap;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
       backdrop-filter: blur(20px);
-      scrollbar-width: none; /* Ocultar scrollbars */
+      overflow-y: auto;
+      height: 100%;
+      min-height: 0;
     }
-    #sentence-bar::-webkit-scrollbar { display: none; }
 
     .sentence-placeholder {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 1.35rem;
       font-weight: 700;
       text-align: center;
       width: 100%;
       letter-spacing: 0.5px;
-      opacity: 0.7;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
     .sentence-chip {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
+      gap: 10px;
+      padding: 12px 24px;
       border-radius: var(--radius-md);
-      font-size: 0.95rem;
+      font-size: 1.3rem;
       font-weight: 900;
       color: #fff;
-      animation: popIn 0.2s forwards;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.2);
-      white-space: nowrap;
-      flex-shrink: 0;
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.25);
     }
 
     .sentence-chip .chip-emoji {
-      font-size: 1.1rem;
+      font-size: 1.6rem;
     }
 
     @keyframes popIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
+      from { transform: scale(0.7) translateY(12px); opacity: 0; }
+      to   { transform: scale(1) translateY(0); opacity: 1; }
     }
 
-    /* AREA PRINCIPAL: MAXIMIZADA AL 100% DEL ESPACIO RESTANTE */
+    /* AREA INFERIOR (Tamaño del Cuadro Rojo / Antiguo cuadro verde) */
     .main-area {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -127,11 +130,11 @@
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      padding: 12px;
+      padding: 10px;
       box-shadow: 0 16px 40px rgba(0,0,0,0.4);
       min-height: 0;
       height: 100%;
-      gap: 10px;
+      gap: 8px;
     }
 
     .hand-canvas-row {
@@ -154,33 +157,33 @@
     #hand-svg {
       width: 100%;
       height: 100%;
-      max-height: 380px; /* Incrementado sustancialmente para ocupar todo el espacio disponible */
-      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4));
+      max-height: 190px; /* Tamaño reducido para encajar en el cuadro de abajo */
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
     }
 
     /* Botones rápidos de hablar y borrar al lado de la mano */
     .action-button-wing {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
       position: absolute;
-      right: 10px;
+      right: 5px;
       top: 50%;
       transform: translateY(-50%);
     }
 
     .btn-action-circle {
-      width: 68px;
-      height: 68px;
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
       border: 2px solid var(--glass-border);
       color: white;
-      font-size: 2.1rem;
+      font-size: 1.6rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
       transition: all 0.2s ease;
     }
     .btn-action-circle:active {
@@ -260,20 +263,20 @@
     #fingers-list-u {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+      gap: 5px;
     }
 
     .finger-slot {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
-      padding: 8px 12px;
+      gap: 5px;
+      padding: 6px 10px;
       border-radius: var(--radius-md);
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255,255,255,0.06);
       cursor: pointer;
-      min-height: 44px;
+      min-height: 40px;
     }
 
     .finger-slot.active {
@@ -325,11 +328,11 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255,255,255,0.08);
       color: var(--text-muted);
-      width: 22px; height: 22px;
+      width: 20px; height: 20px;
       border-radius: var(--radius-full);
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       opacity: 0;
       pointer-events: none;
     }
@@ -346,11 +349,11 @@
       background: var(--glass);
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-lg);
-      padding: 14px;
+      padding: 12px;
       box-shadow: 0 16px 40px rgba(0,0,0,0.4);
       min-height: 0;
       height: 100%;
-      gap: 10px;
+      gap: 8px;
     }
 
     #word-panel-header {
@@ -360,7 +363,7 @@
     }
 
     #active-finger-badge {
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: var(--radius-full);
       font-size: 0.75rem;
       font-weight: 900;
@@ -393,8 +396,8 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
       color: white;
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: var(--radius-md);
       cursor: pointer;
       display: flex;
@@ -417,16 +420,16 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      padding: 10px 8px;
+      padding: 8px 6px;
       border-radius: var(--radius-md);
       border: 1px solid rgba(255,255,255,0.05);
       cursor: pointer;
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       text-align: center;
       color: white;
-      min-height: 64px; /* Optimizada altura de toque */
+      min-height: 52px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
     .word-btn:active {
@@ -434,7 +437,7 @@
     }
 
     .word-emoji {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
     }
 
     #no-selection {
@@ -442,29 +445,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       text-align: center;
-      padding: 16px;
+      padding: 12px;
       height: 100%;
     }
 
     #no-selection .magic-hand {
-      font-size: 3.5rem;
+      font-size: 3rem;
       animation: magicWiggle 3s ease-in-out infinite;
     }
 
     #btn-add-word {
       width: 100%;
-      padding: 10px;
+      padding: 8px;
       border-radius: var(--radius-md);
       border: 2px dashed rgba(255, 255, 255, 0.12);
       background: transparent;
       color: var(--text-muted);
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
 
     /* MODAL */
@@ -485,9 +488,9 @@
       background: linear-gradient(135deg, #1d1838 0%, #090714 100%);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 28px;
-      padding: 24px;
+      padding: 20px;
       width: 100%;
-      max-width: 380px;
+      max-width: 360px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -524,29 +527,34 @@
     /* ===== OPTIMIZACIÓN EN DISPOSITIVOS MÓVILES (VERTICAL) ===== */
     @media (max-width: 900px) {
       #app {
-        grid-template-rows: auto 1fr; /* Solo la barra compacta y el resto 1fr */
+        grid-template-rows: 1.15fr 0.85fr; /* LA RELACIÓN DE PRIORIDAD MODIFICADA EN MÓVIL */
         padding: 8px;
         gap: 8px;
       }
       #sentence-bar {
-        min-height: 52px;
-        max-height: 52px;
-        padding: 6px 12px;
+        height: 100%;
+        min-height: 0;
+        max-height: none;
+        padding: 16px;
       }
       .sentence-placeholder {
-        font-size: 0.85rem;
+        font-size: 1.1rem;
       }
       .main-area {
         grid-template-columns: 1fr;
-        grid-template-rows: 1.15fr 0.85fr; /* Mano arriba ocupando más de la mitad y palabras abajo */
+        grid-template-rows: 1.15fr 0.85fr; /* Mano y palabras abajo */
         gap: 8px;
+        height: 100%;
+        min-height: 0;
       }
       #hand-panel {
         padding: 8px;
         gap: 6px;
+        height: 100%;
+        min-height: 0;
       }
       #hand-svg {
-        max-height: 250px; /* Aumentado sustancialmente */
+        max-height: 120px; /* Reducido para encajar en el cuadro de abajo */
       }
       .action-button-wing {
         flex-direction: row;
@@ -555,35 +563,53 @@
         bottom: 5px;
         top: auto;
         transform: translateX(-50%);
-        gap: 20px;
+        gap: 16px;
       }
       .btn-action-circle {
-        width: 54px;
-        height: 54px;
-        font-size: 1.5rem;
+        width: 44px;
+        height: 44px;
+        font-size: 1.3rem;
       }
       #fingers-list-u {
         gap: 4px;
       }
       .finger-slot {
-        padding: 6px 8px;
-        min-height: 38px;
+        padding: 4px 6px;
+        min-height: 32px;
       }
       .finger-slot-word {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
       }
       #word-panel {
         padding: 8px;
         gap: 6px;
+        height: 100%;
+        min-height: 0;
       }
       #word-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 5px;
       }
       .word-btn {
-        min-height: 50px;
-        font-size: 0.8rem;
-        padding: 6px 2px;
+        min-height: 44px;
+        font-size: 0.75rem;
+        padding: 4px 2px;
+      }
+    }
+
+    @media (max-height: 500px) and (orientation: landscape) {
+      #app {
+        grid-template-rows: 1.15fr 0.85fr;
+      }
+      .main-area {
+        grid-template-columns: 1.2fr 0.8fr;
+        grid-template-rows: 1fr;
+      }
+      #hand-svg {
+        max-height: 100px;
+      }
+      #fingers-list-u {
+        grid-template-columns: repeat(6, 1fr);
       }
     }
   </style>
@@ -591,12 +617,12 @@
 <body>
 <div id="app">
 
-  <!-- BARRA DE ORACIÓN COMPACTADA -->
+  <!-- BARRA DE ORACIÓN EXPANDIDA AL ESPACIO SUPERIOR (Cuadro Amarillo) -->
   <div id="sentence-bar" role="region" aria-label="Oración actual">
     <span class="sentence-placeholder" id="sentence-placeholder">¡Formemos una oración! Toca la mano... 👆</span>
   </div>
 
-  <!-- AREA PRINCIPAL -->
+  <!-- AREA INFERIOR DE MANO Y PALABRAS (Cuadro Rojo) -->
   <div class="main-area">
 
     <!-- PANEL DE LA MANO (Izquierdo) -->
